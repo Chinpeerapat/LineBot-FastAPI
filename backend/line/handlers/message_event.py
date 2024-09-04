@@ -36,15 +36,14 @@ async def handle_message_event_text(event: MessageEvent, settings: Settings):
         # Step 4: Create a new message(Server)
         new_server_message = await create_message(user_id, "server", llm_response, resources_to_rollback)
 
-   # LINE has a character limit per message, so we need to split the response if necessary
-    response_chunks = textwrap.wrap(llm_response, LINE_MAX_CHARACTERS)
-    messages = [TextMessage(text=chunk) for chunk in response_chunks]
+    # LINE has a character limit per message, so we need to split the response if necessary
+    # response_chunks = textwrap.wrap(llm_response, LINE_MAX_CHARACTERS)
+    # messages = [TextMessage(text=chunk) for chunk in response_chunks]
 
-    # Send all the messages sequentially
     await settings.LINE_BOT_API.reply_message(
         ReplyMessageRequest(
             reply_token=event.reply_token,
-            messages=messages
+            messages=[TextMessage(text=llm_response)]
         )
     )
 
@@ -70,15 +69,14 @@ async def handle_message_event_image(event: MessageEvent, settings: Settings):
 
         # Step 4: Create a new message(Server)
         new_server_message = await create_message(user_id, "server", llm_response, resources_to_rollback)
+        
+    # LINE has a character limit per message, so we need to split the response if necessary
+    # response_chunks = textwrap.wrap(llm_response, LINE_MAX_CHARACTERS)
+    # messages = [TextMessage(text=chunk) for chunk in response_chunks]
 
-   # LINE has a character limit per message, so we need to split the response if necessary
-    response_chunks = textwrap.wrap(llm_response, LINE_MAX_CHARACTERS)
-    messages = [TextMessage(text=chunk) for chunk in response_chunks]
-
-    # Send all the messages sequentially
     await settings.LINE_BOT_API.reply_message(
         ReplyMessageRequest(
             reply_token=event.reply_token,
-            messages=messages
+            messages=[TextMessage(text=llm_response)]
         )
     )
